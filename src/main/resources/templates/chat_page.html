@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4 mb-4">Chat Page</h1>
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Fil de discussion</h2>
+      <textarea class="form-control mb-3" rows="10" readonly>
+                    <!-- Utilisez Thymeleaf pour générer des messages à partir de vos données -->
+                    User1: Bonjour tout le monde!
+                    User2: Salut User1!
+                </textarea>
+      <h2>Nouveau message</h2>
+      <form>
+        <div class="form-group">
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <h2>Utilisateurs connectés</h2>
+      <ul class="list-group">
+        <!-- Utilisez Thymeleaf pour générer des éléments de liste à partir de vos données -->
+        <li class="list-group-item">User1</li>
+        <li class="list-group-item">User2</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

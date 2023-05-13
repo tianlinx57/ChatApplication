@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Utilisateurs désactivés</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4 mb-4">Utilisateurs désactivés</h1>
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <a href="accueil.html" class="btn btn-primary">Accueil</a>
+      <a href="nouveau_utilisateur.html" class="btn btn-secondary">Nouveau utilisateur</a>
+    </div>
+    <div>
+      <input type="text" class="form-control" placeholder="Recherche">
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Utilisez Thymeleaf pour générer des lignes de tableau à partir de vos données -->
+    <tr>
+      <td>Jeanne Dupont</td>
+      <td>jeanne.dupont@example.com</td>
+      <td>
+        <a href="#" class="btn btn-warning">Réactiver</a>
+        <a href="#" class="btn btn-danger">Supprimer</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- Ajoutez la pagination ici -->
+</div>
+</body>
+</html>
