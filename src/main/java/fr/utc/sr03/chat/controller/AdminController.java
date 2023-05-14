@@ -22,7 +22,7 @@ public class AdminController {
     public String getUserList(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
-        return "user_list";
+        return "admin/accueil";
     }
 
     @GetMapping("users/add")

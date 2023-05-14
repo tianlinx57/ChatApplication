@@ -30,9 +30,9 @@ public class LoginController {
         System.out.println("===> mail = " + user.getMail());
         System.out.println("===> password = " + user.getPassword());
 
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
+        //List<User> users = userRepository.findAll();
+        //model.addAttribute("users", users);
 
-        return "user_list";
+        return "admin";
     }
 }

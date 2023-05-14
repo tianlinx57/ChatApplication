@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://tuxa.sme.utc:3306/sr03p008
+    username: sr03p008
+    password: g0bmx73Z3orX
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
