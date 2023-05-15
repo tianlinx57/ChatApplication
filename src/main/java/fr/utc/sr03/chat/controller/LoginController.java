@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping("login")
+@RequestMapping(value = {"/", "/login"})
 public class LoginController {
     @Autowired
     private UserRepository userRepository;
@@ -26,13 +27,26 @@ public class LoginController {
 
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model) {
-        //TODO verif login
         System.out.println("===> mail = " + user.getMail());
         System.out.println("===> password = " + user.getPassword());
 
-        //List<User> users = userRepository.findAll();
-        //model.addAttribute("users", users);
+        // Fetch the user from the repository by email
+        Optional<User> existingUser = userRepository.findByMail(user.getMail());
 
-        return "admin";
+        // Check if the user exists
+        if(existingUser.isEmpty()) {
+            model.addAttribute("error", "No user found with the provided email.");
+            return "login";
+        }
+
+        // Check if the password is correct
+        if(!existingUser.get().getPassword().equals(user.getPassword())) {
+            model.addAttribute("error", "Incorrect password.");
+            return "login";
+        }
+
+        return "redirect:/admin/accueil";
     }
+
+
 }

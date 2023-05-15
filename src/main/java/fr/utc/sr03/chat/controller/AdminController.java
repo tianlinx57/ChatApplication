@@ -18,6 +18,11 @@ public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("accueil")
+    public String getAdminHome() {
+        return "admin/accueil";
+    }
+
     @GetMapping("users")
     public String getUserList(Model model) {
         List<User> users = userRepository.findAll();
