@@ -13,8 +13,8 @@
   <h1 class="mt-4 mb-4">Accueil d'admin</h1>
   <div class="d-flex justify-content-between mb-3">
     <div>
-      <a th:href="@{/nouveau_utilisateur}" class="btn btn-primary">Nouveau utilisateur</a>
-      <a th:href="@{/utilisateurs_desactives}" class="btn btn-secondary">Utilisateurs désactivés</a>
+      <a th:href="@{/admin/nouveau_utilisateur}" class="btn btn-primary">Nouveau utilisateur</a>
+      <a th:href="@{/admin/utilisateurs_desactives}" class="btn btn-secondary">Utilisateurs désactivés</a>
     </div>
     <div>
       <input type="text" class="form-control" placeholder="Recherche">
@@ -29,15 +29,14 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Utilisez Thymeleaf pour générer des lignes de tableau à partir de vos données -->
-    <tr>
-      <td>Jean Dupont</td>
-      <td>jean.dupont@example.com</td>
-      <td>
-        <a href="#" class="btn btn-warning">Édition</a>
-        <a href="#" class="btn btn-danger">Suppression</a>
-      </td>
-    </tr>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
+        <td th:text="${user.mail}">jean.dupont@example.com</td>
+        <td>
+          <a href="#" class="btn btn-warning">Édition</a>
+          <a href="#" class="btn btn-danger">Suppression</a>
+        </td>
+      </tr>
     </tbody>
   </table>
   <!-- Ajoutez la pagination ici -->

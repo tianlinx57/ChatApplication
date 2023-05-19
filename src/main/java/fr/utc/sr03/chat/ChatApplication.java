@@ -15,26 +15,26 @@ public class ChatApplication {
         SpringApplication.run(ChatApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demoData(UserRepository repo) {
-        return args -> {
-            // 创建一些用户
-            User user1 = new User();
-            user1.setFirstName("Tian");
-            user1.setLastName("Linxiao");
-            user1.setMail("linxiao.tian@etu.utc.fr");
-            user1.setPassword("tlx200057");
-            user1.setAdmin(true);
-
-            User user2 = new User();
-            user2.setFirstName("Du");
-            user2.setLastName("Xinyu");
-            user2.setMail("xinyu.du@etu.utc.fr");
-            user2.setPassword("password");
-            user2.setAdmin(false);
-
-            // 保存用户
-            repo.saveAll(Arrays.asList(user1, user2));
-        };
-    }
+//    @Bean
+//    public CommandLineRunner demoData(UserRepository repo) {
+//        return args -> {
+//            // 创建一些用户
+//            User user1 = new User();
+//            user1.setFirstName("Tian");
+//            user1.setLastName("Linxiao");
+//            user1.setMail("linxiao.tian@etu.utc.fr");
+//            user1.setPassword("tlx200057");
+//            user1.setAdmin(true);
+//
+//            User user2 = new User();
+//            user2.setFirstName("Du");
+//            user2.setLastName("Xinyu");
+//            user2.setMail("xinyu.du@etu.utc.fr");
+//            user2.setPassword("password");
+//            user2.setAdmin(false);
+//
+//            // 保存用户
+//            repo.saveAll(Arrays.asList(user1, user2));
+//        };
+//    }
 }
