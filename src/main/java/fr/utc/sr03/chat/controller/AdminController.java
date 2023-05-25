@@ -6,10 +6,8 @@ import fr.utc.sr03.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -60,6 +58,45 @@ public class AdminController {
         user.setAdmin(false);
 
         userService.updateUser(user);
-        return "admin/accueil";
+        return "redirect:/admin/accueil";
     }
+
+    @GetMapping("edit")
+    public String editUser(@RequestParam("id") Long userId, Model model, RedirectAttributes redirectAttributes) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "User didn't exist!");
+            return "redirect:/admin/accueil";
+        } else {
+            model.addAttribute("user", user);
+        }
+        return "admin/edit";
+    }
+
+    @PostMapping("/edit")
+    public String updateUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "User updated successfully");
+            return "redirect:/admin/accueil";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while updating the user");
+            return "redirect:/admin/accueil";
+        }
+    }
+
+
+    @GetMapping("/supp")
+    public String deleteUser(@RequestParam("id") Long userId, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.getUserById(userId);
+            userService.removeUser(user);
+            redirectAttributes.addFlashAttribute("message", "User deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while deleting the user");
+        }
+        return "redirect:/admin/accueil";
+    }
+
+
 }

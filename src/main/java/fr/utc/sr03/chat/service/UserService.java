@@ -8,4 +8,6 @@ public interface UserService {
     void removeUser(User user);
     void updateUser(User user);
     User getUser(String mail, String password);
+
+    User getUserById(Long id);
 }

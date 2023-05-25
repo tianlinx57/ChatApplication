@@ -13,13 +13,15 @@
   <h1 class="mt-4 mb-4">Accueil d'admin</h1>
   <div class="d-flex justify-content-between mb-3">
     <div>
-      <a th:href="@{/admin/nouveau_utilisateur}" class="btn btn-primary">Nouveau utilisateur</a>
+      <a th:href="@{/admin/accueil}" class="btn btn-primary">Accueil</a>
+      <a th:href="@{/admin/nouveau_utilisateur}" class="btn btn-secondary">Nouveau utilisateur</a>
       <a th:href="@{/admin/utilisateurs_desactives}" class="btn btn-secondary">Utilisateurs désactivés</a>
     </div>
     <div>
       <input type="text" class="form-control" placeholder="Recherche">
     </div>
   </div>
+  <div th:if="${message}" class="alert alert-success mt-4" role="alert" th:text="${message}" ></div>
   <table class="table">
     <thead>
     <tr>
@@ -33,8 +35,8 @@
         <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
         <td th:text="${user.mail}">jean.dupont@example.com</td>
         <td>
-          <a href="#" class="btn btn-warning">Édition</a>
-          <a href="#" class="btn btn-danger">Suppression</a>
+          <a th:href="@{/admin/edit/(id=${user.id})}" class="btn btn-warning">Édition</a>
+          <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
         </td>
       </tr>
     </tbody>
