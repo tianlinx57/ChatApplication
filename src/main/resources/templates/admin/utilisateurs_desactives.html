@@ -21,6 +21,7 @@
       <input type="text" class="form-control" placeholder="Recherche">
     </div>
   </div>
+  <div th:if="${message}" class="alert alert-success mt-4" role="alert" th:text="${message}" ></div>
   <table class="table">
     <thead>
     <tr>
@@ -31,12 +32,12 @@
     </thead>
     <tbody>
     <!-- Utilisez Thymeleaf pour générer des lignes de tableau à partir de vos données -->
-    <tr>
-      <td>Jeanne Dupont</td>
-      <td>jeanne.dupont@example.com</td>
+    <tr th:each="user : ${users}" th:if="${user.isDisabled}">
+      <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
+      <td th:text="${user.mail}">jean.dupont@example.com</td>
       <td>
-        <a href="#" class="btn btn-warning">Réactiver</a>
-        <a href="#" class="btn btn-danger">Supprimer</a>
+        <a th:href="@{/admin/activer/(id=${user.id})}" class="btn btn-warning">Activer</a>
+        <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
       </td>
     </tr>
     </tbody>

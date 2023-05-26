@@ -18,6 +18,10 @@ public class User {
     @Column(name = "mail")
     private String mail;
 
+    @Column(name = "isDisabled")
+    private Boolean isDisabled = false;
+
+
     private String password;
 
     private boolean admin;
@@ -70,5 +74,13 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isDisabled() {
+        return isDisabled;
+    }
+
+    public void setDisabled(boolean isDisabled) {
+        this.isDisabled = isDisabled;
     }
 }

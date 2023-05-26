@@ -40,6 +40,8 @@ public class AdminController {
 
     @GetMapping("utilisateurs_desactives")
     public String utilisateurs_desactives(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
         return "/admin/utilisateurs_desactives";
     }
 
@@ -92,6 +94,32 @@ public class AdminController {
             User user = userService.getUserById(userId);
             userService.removeUser(user);
             redirectAttributes.addFlashAttribute("message", "User deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while deleting the user");
+        }
+        return "redirect:/admin/accueil";
+    }
+
+    @GetMapping("/disable")
+    public String disableUser(@RequestParam("id") Long userId, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.getUserById(userId);
+            user.setDisabled(true);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "User disabled successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while deleting the user");
+        }
+        return "redirect:/admin/utilisateurs_desactives";
+    }
+
+    @GetMapping("/activer")
+    public String activereUser(@RequestParam("id") Long userId, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.getUserById(userId);
+            user.setDisabled(false);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "User activer successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while deleting the user");
         }

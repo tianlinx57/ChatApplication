@@ -31,14 +31,15 @@
     </tr>
     </thead>
     <tbody>
-      <tr th:each="user : ${users}">
-        <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
-        <td th:text="${user.mail}">jean.dupont@example.com</td>
-        <td>
-          <a th:href="@{/admin/edit/(id=${user.id})}" class="btn btn-warning">Édition</a>
-          <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
-        </td>
-      </tr>
+    <tr th:each="user : ${users}" th:if="${!user.isDisabled}">
+      <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
+      <td th:text="${user.mail}">jean.dupont@example.com</td>
+      <td>
+        <a th:href="@{/admin/edit/(id=${user.id})}" class="btn btn-warning">Édition</a>
+        <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
+        <a th:href="@{/admin/disable/(id=${user.id})}" class="btn btn-secondary">Désactiver</a>
+      </td>
+    </tr>
     </tbody>
   </table>
   <!-- Ajoutez la pagination ici -->
