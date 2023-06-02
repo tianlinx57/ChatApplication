@@ -10,4 +10,7 @@ public interface UserService {
     User getUser(String mail, String password);
 
     User getUserById(Long id);
+    List<User> searchUsersByUsername(String username);
+    int getTotalUsers();
+    List<User> getUsersByPage(int page, int pageSize);
 }

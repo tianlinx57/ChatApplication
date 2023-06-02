@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -126,5 +129,36 @@ public class AdminController {
         return "redirect:/admin/accueil";
     }
 
+    @GetMapping("/recherche")
+    public String searchUsers(@RequestParam("username") String username, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            List<User> searchResults = userService.searchUsersByUsername(username);
+            model.addAttribute("users", searchResults);
+            model.addAttribute("message", "Search results for: " + username);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while searching for users");
+        }
+        return "admin/accueil";
+    }
+
+//    @GetMapping("/admin/accueil")
+//    public String getHomePage(@RequestParam(defaultValue = "0") Integer page, Model model) {
+//        int pageSize = 5; // 每页显示的用户数量
+//
+//        List<User> userList = userService.getAllUsers();
+//        int totalUsers = userList.size();
+//        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+//
+//        int startIndex = page * pageSize;
+//        int endIndex = Math.min(startIndex + pageSize, totalUsers);
+//        List<User> usersOnPage = userList.subList(startIndex, endIndex);
+//
+//        System.out.println(page);
+//        model.addAttribute("users", usersOnPage);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", totalPages);
+//
+//        return "admin/accueil";
+//    }
 
 }
