@@ -1,6 +1,10 @@
 package fr.utc.sr03.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "sr03_users")
@@ -20,6 +24,16 @@ public class User {
 
     @Column(name = "isDisabled")
     private Boolean isDisabled = false;
+
+
+    @JsonBackReference(value="users")
+    @ManyToMany(mappedBy = "users")
+    private List<Chat> chats_user;
+
+    @JsonBackReference(value="proprietaire")
+    @OneToMany(mappedBy = "proprietaire")
+    private List<Chat> chats_proprietaire;
+
 
 
     private String password;
@@ -82,5 +96,21 @@ public class User {
 
     public void setDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
+    }
+
+    public List<Chat> getChats_user() {
+        return chats_user;
+    }
+
+    public void setChats_user(List<Chat> chats_user) {
+        this.chats_user = chats_user;
+    }
+
+    public List<Chat> getChats_proprietaire() {
+        return chats_proprietaire;
+    }
+
+    public void setChats_proprietaire(List<Chat> chats_proprietaire) {
+        this.chats_proprietaire = chats_proprietaire;
     }
 }

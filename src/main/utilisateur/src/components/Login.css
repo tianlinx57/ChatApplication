@@ -1,0 +1,29 @@
+body {
+    background-color: #f8f9fa; /* 淡灰色背景 */
+}
+.login-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.login-img {
+    width: 50%; /* 缩放图片的宽度 */
+    height: auto; /* 保持图片的原始纵横比 */
+    margin-bottom: 1em;
+}
+form {
+    width: 100%;
+    border: none !important; /* 删除表单边框 */
+    display: flex; /* 设置为flex布局 */
+    flex-direction: column; /* 使元素垂直排列 */
+    align-items: center; /* 水平居中 */
+}
+.form-group {
+    width: 100%;
+    text-align: center; /* 文字居中 */
+}
