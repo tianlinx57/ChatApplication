@@ -12,6 +12,9 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    List<User> searchUsersByUsername(String username);
+    List<User> searchDeactivatedUsersByUsername(String username);
+
     List<Chat> getProprietaireChats(long userId);
 
     List<Chat> getAllChats(long userId);

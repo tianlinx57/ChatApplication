@@ -7,6 +7,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script th:src="@{/js/pagination.js}"></script>
+  <script th:src="@{/js/confirmDelete.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -18,11 +20,14 @@
       <a th:href="@{/admin/utilisateurs_desactives}" class="btn btn-primary">Utilisateurs désactivés</a>
     </div>
     <div>
-      <input type="text" class="form-control" placeholder="Recherche">
+      <form th:action="@{/admin/recherche-deactives}" method="get">
+        <input type="text" class="form-control" name="username" placeholder="Nom">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+      </form>
     </div>
   </div>
   <div th:if="${message}" class="alert alert-success mt-4" role="alert" th:text="${message}" ></div>
-  <table class="table">
+  <table class="table" id="userTable">
     <thead>
     <tr>
       <th>Nom</th>
@@ -37,12 +42,15 @@
       <td th:text="${user.mail}">jean.dupont@example.com</td>
       <td>
         <a th:href="@{/admin/activer/(id=${user.id})}" class="btn btn-warning">Activer</a>
+<!--        <a href="#" class="btn btn-danger" onclick="confirmDelete('${user.id}')">Suppression</a>-->
         <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
       </td>
     </tr>
     </tbody>
   </table>
-  <!-- Ajoutez la pagination ici -->
+  <nav id="paginationContainer">
+    <ul class="pagination justify-content-center"></ul>
+  </nav>
 </div>
 </body>
 </html>

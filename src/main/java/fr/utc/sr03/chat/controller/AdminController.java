@@ -126,5 +126,26 @@ public class AdminController {
         return "redirect:/admin/accueil";
     }
 
-
+    @GetMapping("/recherche")
+    public String searchUsers(@RequestParam("username") String username, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            List<User> searchResults = userService.searchUsersByUsername(username);
+            model.addAttribute("users", searchResults);
+            model.addAttribute("message", "Search results for: " + username);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while searching for users");
+        }
+        return "admin/accueil";
+    }
+    @GetMapping("/recherche-deactives")
+    public String searchDeactivatedUsers(@RequestParam("username") String username, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            List<User> searchResults = userService.searchDeactivatedUsersByUsername(username);
+            model.addAttribute("users", searchResults);
+            model.addAttribute("message", "Search results for: " + username);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An error occurred while searching for users");
+        }
+        return "admin/utilisateurs_desactives";
+    }
 }

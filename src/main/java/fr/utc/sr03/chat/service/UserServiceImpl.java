@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,6 +48,25 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
+    }
+
+    public List<User> searchUsersByUsername(String username) {
+        List<User> allUsers = userRepository.findAll(); // 假设所有用户存在于 UserRepository
+
+        List<User> searchResults = allUsers.stream()
+                .filter(user -> user.getFirstName().contains(username) || user.getLastName().contains(username))
+                .collect(Collectors.toList());
+
+        return searchResults;
+    }
+    public List<User> searchDeactivatedUsersByUsername(String username) {
+        List<User> allUsers = userRepository.findAll(); // Assuming all users are stored in UserRepository
+
+        List<User> searchResults = allUsers.stream()
+                .filter(user -> user.isDisabled() && (user.getFirstName().contains(username) || user.getLastName().contains(username)))
+                .collect(Collectors.toList());
+
+        return searchResults;
     }
 
     @Override
