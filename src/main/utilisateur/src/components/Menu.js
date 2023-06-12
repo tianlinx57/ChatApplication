@@ -1,28 +1,30 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function Menu() {
-    const location = useLocation();
+function Menu({ onLogout }) {
+    const user = {
+        id: sessionStorage.getItem('id'),
+        firstName: sessionStorage.getItem('firstName'),
+        lastName: sessionStorage.getItem('lastName'),
+        mail: sessionStorage.getItem('mail')
+    };
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            backgroundColor: '#f8f9fa',
-            padding: '20px 0',
-            zIndex: 1000,
-        }}>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '40%',
-            }}>
-                <Link to="/accueil" className={`btn ${location.pathname === '/accueil' ? 'btn-primary' : 'btn-secondary'}`}>Accueil</Link>
-                <Link to="/mes_chats" className={`btn ${location.pathname === '/mes_chats' ? 'btn-primary' : 'btn-secondary'}`}>Mes chats</Link>
-                <Link to="/mes_invitations" className={`btn ${location.pathname === '/mes_invitations' ? 'btn-primary' : 'btn-secondary'}`}>Mes invitations</Link>
+        <div className="d-flex flex-column" style={{ width: '25%', height: '100vh', background: '#f8f9fa' }}>
+            <div className="list-group list-group-flush">
+                <Link to="/mes_chats" className="list-group-item list-group-item-action bg-light">Mes chats</Link>
+                <Link to="/mes_invitations" className="list-group-item list-group-item-action bg-light">Mes invitations</Link>
+                <Link to="/chatform/0" className="list-group-item list-group-item-action bg-light">Créer un chat</Link>
+                <button onClick={onLogout} className="list-group-item list-group-item-action bg-light">Logout</button>
+            </div>
+            <div className="p-3">
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title" style={{ fontSize: '1.2rem' }}>Mon profil</h5>
+                        <p className="card-text" style={{ fontSize: '1rem' }}>ID: {user.id}</p>
+                        <p className="card-text" style={{ fontSize: '1rem' }}>Nom: {user.firstName} {user.lastName}</p>
+                        <p className="card-text" style={{ fontSize: '1rem' }}>Email: {user.mail}</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

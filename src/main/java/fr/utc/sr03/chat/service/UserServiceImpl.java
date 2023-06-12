@@ -101,4 +101,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
     }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByMail(email);
+    }
 }

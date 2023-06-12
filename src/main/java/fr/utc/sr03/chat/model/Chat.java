@@ -21,6 +21,10 @@ public class Chat {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    @Column(name = "deadline")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deadline;
+
     @Column(name = "description")
     private String description;
 
@@ -89,5 +93,13 @@ public class Chat {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 }
