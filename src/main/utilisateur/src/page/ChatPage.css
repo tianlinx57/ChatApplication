@@ -1,0 +1,30 @@
+/* ChatPage.css */
+
+.chat-container {
+    height: 100vh;
+}
+
+.chat-messages {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+.col-md-8, .col-md-4 {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    position: sticky;
+    bottom: 0;
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+
+.user-list {
+    flex-grow: 1;
+    overflow-y: auto;
+}
