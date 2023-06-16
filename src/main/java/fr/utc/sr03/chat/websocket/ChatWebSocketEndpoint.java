@@ -46,7 +46,7 @@ public class ChatWebSocketEndpoint {
 
         // 创建ChatMessage对象
         ChatMessage chatMessage = new ChatMessage(incomingEmail, incomingContent, incomingTimestamp);
-        System.out.println(chatMessage);
+        //System.out.println(chatMessage);
 
         // 将ChatMessage对象广播给聊天室的所有用户
         broadcastMessage(chat, chatMessage);

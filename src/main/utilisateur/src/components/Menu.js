@@ -14,7 +14,7 @@ function Menu({ onLogout }) {
                 <Link to="/mes_chats" className="list-group-item list-group-item-action bg-light">Mes chats</Link>
                 <Link to="/mes_invitations" className="list-group-item list-group-item-action bg-light">Mes invitations</Link>
                 <Link to="/chatform/0" className="list-group-item list-group-item-action bg-light">Créer un chat</Link>
-                <button onClick={onLogout} className="list-group-item list-group-item-action bg-light">Logout</button>
+                <Link to="/logout" className="list-group-item list-group-item-action bg-light">Logout</Link>
             </div>
             <div className="p-3">
                 <div className="card">

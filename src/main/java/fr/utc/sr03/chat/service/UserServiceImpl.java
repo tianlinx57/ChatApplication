@@ -4,6 +4,7 @@ import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.Chat;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -29,6 +33,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        // 在保存之前加密密码
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+    }
+
+    public void createUser(User user) {
+        // 在保存之前加密密码
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         userRepository.save(user);
     }
 
@@ -37,12 +51,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByMail(mail);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            if(user.getPassword().equals(password)){
+            if(passwordEncoder.matches(password, user.getPassword())){
                 return user;
             }
         }
         return null;
     }
+
 
     @Override
     public User getUserById(Long id) {

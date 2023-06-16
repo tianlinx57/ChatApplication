@@ -4,6 +4,8 @@ import fr.utc.sr03.chat.dao.ChatRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.Chat;
 import fr.utc.sr03.chat.model.User;
+import fr.utc.sr03.chat.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,25 @@ public class ChatApplication {
     public static void main(String[] args) {
         SpringApplication.run(ChatApplication.class, args);
     }
+
+//
+//    @Autowired
+//    private UserService userService;
+//    @Bean
+//    public CommandLineRunner initDatabase() {
+//        return args -> {
+//            // Create a new user
+//            User user = new User();
+//            user.setFirstName("Linxiao");
+//            user.setLastName("TIAN");
+//            user.setMail("1002179940@qq.com");
+//            user.setPassword("tlx200057");
+//            user.setAdmin(true);
+//
+//            // Add the user to the database through the user service
+//            userService.createUser(user);
+//        };
+//    }
 
 //    @Bean
 //    public CommandLineRunner demoData(UserRepository userRepo, ChatRepository chatRepo) {
@@ -70,3 +91,45 @@ public class ChatApplication {
 //        return calendar.getTime();
 //    }
 }
+//package fr.utc.sr03.chat;
+//
+//import fr.utc.sr03.chat.model.User;
+//import fr.utc.sr03.chat.service.UserService;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.CommandLineRunner;
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//
+//@SpringBootApplication
+//public class ChatApplication {
+//
+//    @Autowired
+//    private UserService userService;
+//
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//
+//    public static void main(String[] args) {
+//        SpringApplication.run(ChatApplication.class, args);
+//    }
+//
+//    @Bean
+//    public CommandLineRunner encryptExistingUserPasswords() {
+//        return args -> {
+//            // Fetch all users from the database
+//            var users = userService.getAllUsers();
+//
+//            // Encrypt passwords and update them in the database
+//            for (User user : users) {
+//                // Assuming that you know that the passwords are not encrypted yet.
+//                String encryptedPassword = passwordEncoder.encode(user.getPassword());
+//                user.setPassword(encryptedPassword);
+//
+//                // Save the updated user back to the database
+//                userService.updateUser(user);
+//            }
+//        };
+//    }
+//}

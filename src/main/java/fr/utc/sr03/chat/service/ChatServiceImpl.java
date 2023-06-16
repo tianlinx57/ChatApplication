@@ -58,6 +58,9 @@ public class ChatServiceImpl implements ChatService{
         return chatRepository.save(chat);
     }
 
+
+
+
     public Chat updateChat(long id, ChatDTO chatData) {
         // 从数据库中查找聊天
         Optional<Chat> optionalChat = chatRepository.findById(id);

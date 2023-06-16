@@ -101,7 +101,7 @@ const ChatForm = () => {
         };
 
         try {
-            if (id === 0) { // Assuming that id is already defined
+            if (id == 0) { // Assuming that id is already defined
                 // Create new chat
                 const response = await axios.post('http://localhost:8080/api/chat', chatData);
                 if (response.status === 201) {

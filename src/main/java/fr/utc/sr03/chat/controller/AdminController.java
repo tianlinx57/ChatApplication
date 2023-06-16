@@ -59,7 +59,7 @@ public class AdminController {
         user.setPassword(user.getPassword());
         user.setAdmin(false);
 
-        userService.updateUser(user);
+        userService.createUser(user);
         return "redirect:/admin/accueil";
     }
 
