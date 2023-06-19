@@ -26,6 +26,12 @@ public class ChatServiceImpl implements ChatService{
         return chatRepository.findById(chatId);
     }
 
+    @Override
+    public void deleteChat(long chatId) {
+        chatRepository.deleteById(chatId);
+    }
+
+
     public Chat createChat(ChatDTO chatData) {
         // Create new Chat object
         Chat chat = new Chat();

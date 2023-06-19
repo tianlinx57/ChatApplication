@@ -81,6 +81,16 @@ public class RESTapiController {
         }
     }
 
+    @DeleteMapping("/chat/{id}")
+    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
+        try {
+            chatService.deleteChat(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
     public static class LoginRequest {

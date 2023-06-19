@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import './ChatPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const ChatPage = () => {
+    const navigate = useNavigate();
+
     const [chatInfo, setChatInfo] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const { id: chatId } = useParams();
     const webSocket = useRef(null);
     const messagesEndRef = useRef(null);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (chatId) {
@@ -39,20 +44,25 @@ const ChatPage = () => {
 
         webSocket.current.onclose = () => {
             console.log("Close the websocket connection...");
+            setIsModalOpen(true);
         };
     };
 
     useEffect(() => {
         const email = sessionStorage.getItem('mail');
         if (email && chatId) {
-            startWebSocket();
+            const timer = setTimeout(() => {
+                startWebSocket();
+            }, 1000); // 延迟 1 秒
+
+            return () => {
+                clearTimeout(timer);
+                if (webSocket.current && webSocket.current.readyState === WebSocket.OPEN) {
+                    webSocket.current.close();
+                }
+            };
         }
-        return () => {
-            if (webSocket.current) {
-                webSocket.current.close();
-            }
-        };
-    },[chatId]);
+    }, [chatId]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -78,11 +88,43 @@ const ChatPage = () => {
         messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }, [messages]);
 
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        navigate("/mes_chats");
+    };
+
+    // useEffect(() => {
+    //     console.log('Modal state changed:', isModalOpen);
+    // }, [isModalOpen]);
+
     return (
         <div className="container chat-container">
+            {isModalOpen && (
+                <div className="custom-modal-backdrop">
+                    <div className="custom-modal">
+                        <div className="custom-modal-header">
+                            <h5 className="custom-modal-title">Chat Closed</h5>
+                        </div>
+                        <div className="custom-modal-body">
+                            <p>The chat has been closed.</p>
+                        </div>
+                        <div className="custom-modal-footer">
+                            <button className="btn btn-primary" onClick={closeModal}>Return to Chats</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="row">
                 <div className="col-md-8">
-                    <h1 className="mt-4 mb-4">Chat Page</h1>
+                    {chatInfo && (
+                        <div className="d-flex align-items-center mb-4">
+                            <h1 className="mr-3">{chatInfo.nom}</h1>
+                            <p className="description mb-0 mr-3">{chatInfo.description}</p>
+                            <p className="deadline mb-0">Fini à: {new Date(chatInfo.deadline).toLocaleString()}</p>
+                        </div>
+                    )}
                     <div className="chat-messages" ref={messagesEndRef}>
                         {messages.map((msg, index) => (
                             <div key={index} className="card mb-2">
@@ -100,12 +142,16 @@ const ChatPage = () => {
                     <ul className="list-group user-list">
                         {chatInfo && chatInfo.proprietaire && (
                             <li className="list-group-item" key={chatInfo.proprietaire.id}>
-                                {chatInfo.proprietaire.firstName} {chatInfo.proprietaire.lastName} (Propriétaire)
+                                <div className="font-weight-bold">{chatInfo.proprietaire.mail}</div>
+                                <div>
+                                    {chatInfo.proprietaire.firstName} {chatInfo.proprietaire.lastName} (Propriétaire)
+                                </div>
                             </li>
                         )}
                         {chatInfo && chatInfo.users && chatInfo.users.map(user => (
                             <li className="list-group-item" key={user.id}>
-                                {user.firstName} {user.lastName}
+                                <div className="font-weight-bold">{user.mail}</div>
+                                <div>{user.firstName} {user.lastName}</div>
                             </li>
                         ))}
                     </ul>

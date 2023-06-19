@@ -49,6 +49,7 @@ class MesInvitations extends Component {
                                 <tr>
                                     <th>Nom</th>
                                     <th>Créé à</th>
+                                    <th>Fini à</th>
                                     <th>Description</th>
                                     <th>Propriétaire</th>
                                     <th>Actions</th>
@@ -59,6 +60,7 @@ class MesInvitations extends Component {
                                     <tr key={chat.id}>
                                         <td>{chat.nom}</td>
                                         <td>{this.formatDateTime(chat.createDate)}</td>
+                                        <td>{this.formatDateTime(chat.deadline)}</td>
                                         <td>{chat.description}</td>
                                         <td>{chat.proprietaire.firstName} {chat.proprietaire.lastName}</td>
                                         <td>

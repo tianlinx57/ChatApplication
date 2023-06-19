@@ -8,6 +8,9 @@ import java.util.Optional;
 
 public interface ChatService {
     Optional<Chat> getChat(long chatId);
+
+    void deleteChat(long chatId);
+
     Chat createChat(ChatDTO chatData);
     Chat updateChat(long id,ChatDTO chatData);
 }

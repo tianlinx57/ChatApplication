@@ -8,3 +8,6 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: update
+  security:
+    login:
+      page: /login

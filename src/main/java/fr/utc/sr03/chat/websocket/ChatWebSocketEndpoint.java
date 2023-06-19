@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import fr.utc.sr03.chat.config.SpringApplicationContextHolder;
+import fr.utc.sr03.chat.dao.ChatRepository;
+import org.springframework.context.ApplicationContext;
 
 @Component
 @ServerEndpoint("/websocket/{chatId}/{email}")
@@ -19,12 +22,40 @@ public class ChatWebSocketEndpoint {
 
     private static final Gson gson = new Gson();
 
+    private final ChatRepository chatRepository;
+
+    public ChatWebSocketEndpoint() {
+        ApplicationContext applicationContext = SpringApplicationContextHolder.getContext();
+        this.chatRepository = applicationContext.getBean(ChatRepository.class);
+    }
+
+    private Instant getChatDeadline(Long chatId) {
+        // 使用chatRepository来查询聊天的截止时间
+        return chatRepository.findById(chatId)
+                .map(chat -> chat.getDeadline().toInstant())
+                .orElse(Instant.MAX);
+    }
+
     @OnOpen
     public synchronized void onOpen(@PathParam("chatId") Long chatId, @PathParam("email") String email, Session session) {
+        // 检查聊天是否存在
+        if (!chatRepository.existsById(chatId)) {
+            closeSession(session);
+            return;
+        }
+
         Map<String, Session> chat = CHATS.getOrDefault(chatId, new ConcurrentHashMap<>());
         chat.put(email, session);
         CHATS.put(chatId, chat);
-        System.out.println("WebSocket connection established for chatId: " + chatId + " and email: " + email);
+
+        // 检查当前时间是否超过截止时间
+        Instant deadline = getChatDeadline(chatId);
+        Instant now = Instant.now();
+        if (now.isAfter(deadline)) {
+            chatRepository.deleteById(chatId);
+            chat.values().forEach(this::closeSession);
+            return; // 提前退出，不发送消息
+        }
 
         // 通知聊天室的所有用户有新用户加入了
         ChatMessage chatMessage = new ChatMessage(email, "joined the chat!", Instant.now().getEpochSecond());
@@ -35,8 +66,19 @@ public class ChatWebSocketEndpoint {
     public synchronized void onMessage(@PathParam("chatId") Long chatId, @PathParam("email") String email, String message) {
         Map<String, Session> chat = CHATS.get(chatId);
 
+        // 获取聊天的截止时间
+        Instant deadline = getChatDeadline(chatId);
+        Instant now = Instant.now();
+
+        // 检查当前时间是否超过截止时间
+        if (now.isAfter(deadline)) {
+            // 关闭所有与该聊天关联的会话
+            chat.values().forEach(this::closeSession);
+            chatRepository.deleteById(chatId);
+            return; // 提前退出，不发送消息
+        }
+
         // 解析JSON消息
-        Gson gson = new Gson();
         ChatMessage incomingMessage = gson.fromJson(message, ChatMessage.class);
 
         // 从解析的JSON中获取email和content
@@ -46,7 +88,6 @@ public class ChatWebSocketEndpoint {
 
         // 创建ChatMessage对象
         ChatMessage chatMessage = new ChatMessage(incomingEmail, incomingContent, incomingTimestamp);
-        //System.out.println(chatMessage);
 
         // 将ChatMessage对象广播给聊天室的所有用户
         broadcastMessage(chat, chatMessage);
@@ -56,8 +97,6 @@ public class ChatWebSocketEndpoint {
     @OnClose
     public synchronized void onClose(@PathParam("chatId") Long chatId, @PathParam("email") String email) {
         Map<String, Session> chat = CHATS.get(chatId);
-
-        System.out.println("Closed for chatId: " + chatId + " and email: " + email);
 
         if (chat != null) {
             chat.remove(email);
@@ -74,9 +113,7 @@ public class ChatWebSocketEndpoint {
         chat.values().forEach(session -> {
             try {
                 session.getBasicRemote().sendText(jsonMessage);
-                //System.out.println("jsonMessage: " + jsonMessage);
             } catch (IOException e) {
-                // 发送消息时发生异常，可以选择关闭 WebSocket 连接或采取其他适当的处理方式
                 e.printStackTrace();
                 System.err.println("Failed to send message: " + e.getMessage());
                 closeSession(session);
@@ -91,6 +128,4 @@ public class ChatWebSocketEndpoint {
             e.printStackTrace();
         }
     }
-
-
 }
