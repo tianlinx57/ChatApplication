@@ -39,12 +39,12 @@ class MesInvitations extends Component {
         const { chats } = this.state;
 
         return (
-            <div className="container" style={{fontSize: '70%' }}>
+            <div className="container" style={{ fontSize: '14px', color: '#333' }}>
                 <div className="row">
-                    <div className='col-md-12'>
-                        <h1 className="mt-4 mb-4" style={{ fontSize: '1.4rem' }}>Mes invitasions</h1>
+                    <div className="col-md-12">
+                        <h1 className="mt-4 mb-4" style={{ fontSize: '1.4rem' }}>Mes invitations</h1>
                         <div>
-                            <table className="table" style={{ fontSize: '1rem' }}>
+                            <table className="table table-striped" style={{ fontSize: '14px', background: '#f8f9fa' }}>
                                 <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -64,7 +64,7 @@ class MesInvitations extends Component {
                                         <td>{chat.description}</td>
                                         <td>{chat.proprietaire.firstName} {chat.proprietaire.lastName}</td>
                                         <td>
-                                            <Link to={`/chatpage/${chat.id}`} className="btn btn-warning mr-2" style={{ fontSize: '0.8rem' }}>Entrer</Link>
+                                            <Link to={`/chatpage/${chat.id}`} className="btn btn-warning mr-2" style={{ fontSize: '12px', borderRadius: '20px' }}>Entrer</Link>
                                         </td>
                                     </tr>
                                 ))}

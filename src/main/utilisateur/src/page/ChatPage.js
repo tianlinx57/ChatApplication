@@ -102,7 +102,7 @@ const ChatPage = () => {
         <div className="container chat-container">
             {isModalOpen && (
                 <div className="custom-modal-backdrop">
-                    <div className="custom-modal">
+                    <div className="custom-modal" style={{ boxShadow: '0 40px 80px rgba(0, 0, 0, 0.1)' }}>
                         <div className="custom-modal-header">
                             <h5 className="custom-modal-title">Chat Closed</h5>
                         </div>
@@ -117,32 +117,32 @@ const ChatPage = () => {
             )}
 
             <div className="row">
-                <div className="col-md-8">
+                <div className="col-md-8" style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '10px', padding: '20px' }}>
                     {chatInfo && (
                         <div className="d-flex align-items-center mb-4">
-                            <h1 className="mr-3">{chatInfo.nom}</h1>
-                            <p className="description mb-0 mr-3">{chatInfo.description}</p>
-                            <p className="deadline mb-0">Fini à: {new Date(chatInfo.deadline).toLocaleString()}</p>
+                            <h1 className="mr-3" style={{ fontSize: '1.8rem' }}>{chatInfo.nom}</h1>
+                            <p className="description mb-0 mr-3" style={{ fontSize: '1rem' }}>{chatInfo.description}</p>
+                            <p className="deadline mb-0" style={{ fontSize: '1rem' }}>Fini à: {new Date(chatInfo.deadline).toLocaleString()}</p>
                         </div>
                     )}
                     <div className="chat-messages" ref={messagesEndRef}>
                         {messages.map((msg, index) => (
-                            <div key={index} className="card mb-2">
+                            <div key={index} className="card mb-2" style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
                                 <div className="card-body">
-                                    <h5 className="card-title">{msg.email}</h5>
-                                    <h6 className="card-subtitle mb-2 text-muted">{new Date(msg.timestamp * 1000).toLocaleString()}</h6>
-                                    <p className="card-text">{msg.content}</p>
+                                    <h5 className="card-title" style={{ fontSize: '1.2rem' }}>{msg.email}</h5>
+                                    <h6 className="card-subtitle mb-2 text-muted" style={{ fontSize: '0.9rem' }}>{new Date(msg.timestamp * 1000).toLocaleString()}</h6>
+                                    <p className="card-text" style={{ fontSize: '1rem' }}>{msg.content}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="col-md-4">
-                    <h2>Utilisateurs</h2>
+                <div className="col-md-4" style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '10px', padding: '20px' }}>
+                    <h2 style={{ fontSize: '1.8rem' }}>Utilisateurs</h2>
                     <ul className="list-group user-list">
                         {chatInfo && chatInfo.proprietaire && (
                             <li className="list-group-item" key={chatInfo.proprietaire.id}>
-                                <div className="font-weight-bold">{chatInfo.proprietaire.mail}</div>
+                                <div className="font-weight-bold" style={{ fontSize: '1rem' }}>{chatInfo.proprietaire.mail}</div>
                                 <div>
                                     {chatInfo.proprietaire.firstName} {chatInfo.proprietaire.lastName} (Propriétaire)
                                 </div>
@@ -150,24 +150,25 @@ const ChatPage = () => {
                         )}
                         {chatInfo && chatInfo.users && chatInfo.users.map(user => (
                             <li className="list-group-item" key={user.id}>
-                                <div className="font-weight-bold">{user.mail}</div>
+                                <div className="font-weight-bold" style={{ fontSize: '1rem' }}>{user.mail}</div>
                                 <div>{user.firstName} {user.lastName}</div>
                             </li>
                         ))}
                     </ul>
                     <div className="input-container">
-                        <h2>Nouveau message</h2>
+                        <h2 style={{ fontSize: '1.8rem' }}>Nouveau message</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <textarea
-                                    className="form-control"
-                                    rows="3"
-                                    value={newMessage}
-                                    onChange={e => setNewMessage(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                ></textarea>
+                            <textarea
+                                className="form-control"
+                                rows="3"
+                                value={newMessage}
+                                onChange={e => setNewMessage(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                style={{ fontSize: '1rem', borderRadius: '5px', border: '1px solid #ccc' }}
+                            ></textarea>
                             </div>
-                            <button type="submit" className="btn btn-primary">Envoyer</button>
+                            <button type="submit" className="btn btn-primary" style={{ fontSize: '1rem', borderRadius: '5px' }}>Envoyer</button>
                         </form>
                     </div>
                 </div>

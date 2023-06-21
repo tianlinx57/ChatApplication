@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,19 +28,17 @@ public class LoginController {
     }
 
     @PostMapping
-    public String postLogin(@ModelAttribute User user, Model model) {
+    public String postLogin(@ModelAttribute User user, Model model, HttpServletRequest request) {
         System.out.println("===> mail = " + user.getMail());
         System.out.println("===> password = " + user.getPassword());
 
         User existingUser = userService.getUser(user.getMail(), user.getPassword());
-
         if (existingUser == null) {
             model.addAttribute("error", "No user found with the provided email or password is incorrect.");
             return "login";
         }
-
+        request.getSession().setAttribute("email", user.getMail());
         return "redirect:/admin/accueil";
     }
-
 
 }

@@ -22,7 +22,7 @@ class MesChats extends Component {
                 lastName: sessionStorage.getItem('lastName'),
                 mail: sessionStorage.getItem('mail')
             };
-            this.setState({user});
+            this.setState({ user });
 
             this.fetchChats(userId);
         }
@@ -64,13 +64,13 @@ class MesChats extends Component {
         const { chats } = this.state;
 
         return (
-            <div className="container" style={{fontSize: '70%' }}>
+            <div className="container" style={{ fontSize: '14px', color: '#333' }}>
                 <div className="row">
-                    <div className='col-md-12'>
+                    <div className="col-md-12">
                         <h1 className="mt-4 mb-4" style={{ fontSize: '1.4rem' }}>Mes chats</h1>
                         {this.state.message && <div className="alert alert-info">{this.state.message}</div>}
                         <div>
-                            <table className="table" style={{ fontSize: '1rem' }}>
+                            <table className="table table-striped" style={{ fontSize: '14px', background: '#f8f9fa' }}>
                                 <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -90,9 +90,9 @@ class MesChats extends Component {
                                         <td>{chat.description}</td>
                                         <td>{chat.proprietaire.firstName} {chat.proprietaire.lastName}</td>
                                         <td>
-                                            <Link to={`/chatpage/${chat.id}`} className="btn btn-warning mr-2" style={{ fontSize: '0.8rem' }}>Entrer</Link>
-                                            <Link to={`/chatform/${chat.id}`} className="btn btn-primary mr-2" style={{ fontSize: '0.8rem' }}>Édition</Link>
-                                            <button className="btn btn-danger" style={{ fontSize: '0.8rem' }} onClick={() => this.handleDelete(chat.id)}>Suppression</button>
+                                            <Link to={`/chatpage/${chat.id}`} className="btn btn-warning mr-2" style={{ fontSize: '12px', borderRadius: '20px' }}>Entrer</Link>
+                                            <Link to={`/chatform/${chat.id}`} className="btn btn-primary mr-2" style={{ fontSize: '12px', borderRadius: '20px' }}>Édition</Link>
+                                            <button className="btn btn-danger" style={{ fontSize: '12px', borderRadius: '20px' }} onClick={() => this.handleDelete(chat.id)}>Suppression</button>
                                         </td>
                                     </tr>
                                 ))}

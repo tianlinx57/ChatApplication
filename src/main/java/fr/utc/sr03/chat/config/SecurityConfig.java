@@ -21,22 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/websocket/**").permitAll() // Autoriser les requêtes WebSocket
-                .antMatchers("/login").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/logout").permitAll()
-                .antMatchers("/forgot-password").permitAll()
-                .antMatchers("/css/**", "/fonts/**", "/images/**", "/js/**", "/error", "/webjars/**").permitAll()
-                .antMatchers("/reset-password*").permitAll()
-                .anyRequest().authenticated() // 其他路径需要进行身份验证
-                .and()
-                .formLogin()
-                .loginPage("/login") // 配置登录页面的URL
-                .defaultSuccessUrl("/admin/accueil", true) // 配置登录成功后的重定向URL
-                .and()
-                .logout()
-                .logoutUrl("/logout") // 配置注销URL
-                .logoutSuccessUrl("/login") // 配置注销成功后的重定向URL
+                .antMatchers("/**").permitAll() // Autoriser les requêtes WebSocket
                 .and()
                 .csrf().disable(); // 禁用CSRF保护（仅供示例，实际应用中需要启用CSRF保护）
     }

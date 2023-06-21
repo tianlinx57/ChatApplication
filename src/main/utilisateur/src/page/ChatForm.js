@@ -129,11 +129,11 @@ const ChatForm = () => {
 
     return (
         <div className="col-md-12">
-            <div className="container grey mb-5">
-                <br/>
+            <div className="container grey mb-5" style={{ fontSize: '14px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', width: '400px', margin: '0 auto', padding: '20px' }}>
+                <br />
                 <div className="row mb-4">
                     <div className="col text-center">
-                        {id === '0' ? <h2>Create New Chat</h2> : <h2>Modify Chat</h2>}
+                        {id === '0' ? <h2 style={{ fontSize: '1.8rem' }}>Create New Chat</h2> : <h2 style={{ fontSize: '1.8rem' }}>Modify Chat</h2>}
                     </div>
                 </div>
                 <form onSubmit={handleSubmit} action="#" method="post">
@@ -147,6 +147,7 @@ const ChatForm = () => {
                             onChange={handleInputChange}
                             value={chatTitle}
                             required
+                            style={{ fontSize: '14px', borderRadius: '5px', border: '1px solid #ccc' }}
                         />
                     </div>
                     <div className="mb-1">
@@ -159,6 +160,7 @@ const ChatForm = () => {
                             onChange={handleInputChange}
                             value={deadline}
                             required
+                            style={{ fontSize: '14px', borderRadius: '5px', border: '1px solid #ccc' }}
                         />
                     </div>
                     <div className="mb-1">
@@ -170,11 +172,12 @@ const ChatForm = () => {
                             onChange={handleInputChange}
                             value={chatDescription}
                             required
+                            style={{ fontSize: '14px', borderRadius: '5px', border: '1px solid #ccc' }}
                         ></textarea>
                     </div>
                     <div className="mb-2">
                         <label htmlFor="chatMembers" className="form-label">Chat Members</label>
-                        <div className="chat-member-container" style={{ height: "150px", overflow: "auto", display: "flex", flexDirection: "column" }}>
+                        <div className="chat-member-container" style={{ height: "150px", overflow: "auto", display: "flex", flexDirection: "column", border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
                             <ul className="chat-member-list" style={{ paddingLeft: "0", listStyle: "none" }}>
                                 {chatMembers.map(member => (
                                     <li key={member.email} style={{ marginBottom: "10px" }}>
@@ -194,12 +197,12 @@ const ChatForm = () => {
                         </div>
                     </div>
                     <div style={{ textAlign: "center" }}>
-                        <button type="submit" className="btn btn-dark"> {id === '0' ? `Create Chat` : `Modify Chat`}</button>
+                        <button type="submit" className="btn btn-dark" style={{ fontSize: '14px', borderRadius: '5px' }}> {id === '0' ? `Create Chat` : `Modify Chat`}</button>
                     </div>
-                    <br/>
+                    <br />
                 </form>
-                {successMessage && <div className="alert alert-warning">{successMessage}</div>}
-                <br/>
+                {successMessage && <div className="alert alert-warning" style={{ fontSize: '14px' }}>{successMessage}</div>}
+                <br />
             </div>
         </div>
     );
