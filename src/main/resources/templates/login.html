@@ -9,6 +9,13 @@
         body {
             background-color: #f8f9fa; /* 淡灰色背景 */
         }
+        .Messengeur-title {
+            font-size: 32px; /* 调整字号大小 */
+            color: #333; /* 调整字体颜色 */
+            text-align: center; /* 居中对齐 */
+            margin-top: 20px; /* 上边距 */
+            font-weight: bold; /* 字体加粗 */
+        }
         .login-container {
             max-width: 500px;
             margin: 0 auto;
@@ -39,8 +46,9 @@
 </head>
 <body>
 <div class="login-container">
+    <h1 class="Messengeur-title">Messengeur</h1>
     <!-- Display login image -->
-    <img th:src="@{/images/admin.jpg}" alt="Login Image" class="login-img">
+    <img th:src="@{/images/Messengeur.png}" alt="Login Image" class="login-img">
     <form action="#" th:action="@{/login}" th:object="${user}" method="post" class="mt-4">
         <!-- Display error message -->
         <div th:if="${error}" class="alert alert-danger" role="alert">
