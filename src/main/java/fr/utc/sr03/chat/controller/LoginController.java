@@ -33,8 +33,13 @@ public class LoginController {
         System.out.println("===> password = " + user.getPassword());
 
         User existingUser = userService.getUser(user.getMail(), user.getPassword());
+        System.out.println("===> admin = " + user.isAdmin());
         if (existingUser == null) {
             model.addAttribute("error", "No user found with the provided email or password is incorrect.");
+            return "login";
+        }
+        if (!existingUser.isAdmin()) {
+            model.addAttribute("error", "You do not have permission to access the admin page.");
             return "login";
         }
         request.getSession().setAttribute("email", user.getMail());

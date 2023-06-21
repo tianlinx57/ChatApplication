@@ -12,6 +12,7 @@ const ChatPage = () => {
     const { id: chatId } = useParams();
     const webSocket = useRef(null);
     const messagesEndRef = useRef(null);
+    const [userStatus, setUserStatus] = useState({});
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,7 +20,14 @@ const ChatPage = () => {
         if (chatId) {
             fetch(`http://localhost:8080/api/chat/${chatId}`)
                 .then(response => response.json())
-                .then(data => setChatInfo(data))
+                .then(data => {
+                    setChatInfo(data);
+                    const initialStatus = {};
+                    data.users.forEach(user => {
+                        initialStatus[user.id] = 'red';
+                    });
+                    setUserStatus(initialStatus);
+                })
                 .catch(err => console.error(err));
         }
     }, [chatId]);
@@ -36,6 +44,12 @@ const ChatPage = () => {
             const data = JSON.parse(event.data);
             setMessages((prevMessages) => [...prevMessages, data]);
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+
+            if (data.content === 'joined the chat!') {
+                setUserStatus(prevStatus => ({ ...prevStatus, [data.email]: 'green' }));
+            } else if (data.content === 'left the chat!') {
+                setUserStatus(prevStatus => ({ ...prevStatus, [data.email]: 'red' }));
+            }
         };
 
         webSocket.current.onerror = (event) => {
@@ -141,7 +155,7 @@ const ChatPage = () => {
                     <h2 style={{ fontSize: '1.8rem' }}>Utilisateurs</h2>
                     <ul className="list-group user-list">
                         {chatInfo && chatInfo.proprietaire && (
-                            <li className="list-group-item" key={chatInfo.proprietaire.id}>
+                            <li className="list-group-item" key={chatInfo.proprietaire.id} style={{ backgroundColor: userStatus[chatInfo.proprietaire.mail] }}>
                                 <div className="font-weight-bold" style={{ fontSize: '1rem' }}>{chatInfo.proprietaire.mail}</div>
                                 <div>
                                     {chatInfo.proprietaire.firstName} {chatInfo.proprietaire.lastName} (Propriétaire)
@@ -149,7 +163,7 @@ const ChatPage = () => {
                             </li>
                         )}
                         {chatInfo && chatInfo.users && chatInfo.users.map(user => (
-                            <li className="list-group-item" key={user.id}>
+                            <li className="list-group-item" key={user.id} style={{ backgroundColor: userStatus[user.mail] }}>
                                 <div className="font-weight-bold" style={{ fontSize: '1rem' }}>{user.mail}</div>
                                 <div>{user.firstName} {user.lastName}</div>
                             </li>

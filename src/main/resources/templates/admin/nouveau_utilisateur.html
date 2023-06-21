@@ -14,6 +14,7 @@
   <a th:href="@{/admin/accueil}" class="btn btn-secondary">Accueil</a>
   <a th:href="@{/admin/nouveau_utilisateur}" class="btn btn-primary">Nouveau utilisateur</a>
   <a th:href="@{/admin/utilisateurs_desactives}" class="btn btn-secondary">Utilisateurs désactivés</a>
+  <a th:href="@{/logout}" class="btn btn-danger">Déconnexion</a>
   <form th:action="@{/admin/users/add}" th:object="${user}" method="post">
     <div class="form-group">
       <label for="lastName">LastName</label>

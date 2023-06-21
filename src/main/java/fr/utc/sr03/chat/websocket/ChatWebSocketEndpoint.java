@@ -57,9 +57,28 @@ public class ChatWebSocketEndpoint {
             return; // 提前退出，不发送消息
         }
 
+        for (String existingEmail : chat.keySet()) {
+            if (!existingEmail.equals(email)) { // 不要给自己发送消息
+                ChatMessage existingUserMessage = new ChatMessage(existingEmail, "joined the chat!", Instant.now().getEpochSecond());
+                sendMessageToUser(session, existingUserMessage);
+            }
+        }
+
+
         // 通知聊天室的所有用户有新用户加入了
         ChatMessage chatMessage = new ChatMessage(email, "joined the chat!", Instant.now().getEpochSecond());
         broadcastMessage(chat, chatMessage);
+    }
+
+    private void sendMessageToUser(Session session, ChatMessage chatMessage) {
+        String jsonMessage = gson.toJson(chatMessage);
+        try {
+            session.getBasicRemote().sendText(jsonMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to send message: " + e.getMessage());
+            closeSession(session);
+        }
     }
 
     @OnMessage

@@ -44,6 +44,9 @@ const Login = () => {
     return (
         <div className="login-container">
             <img src="/messenger.png" alt="Login" className="login-img" />
+            <h1 style={{ fontSize: '2.5em', fontFamily: 'Arial, sans-serif', textAlign: 'center', marginBottom: '20px' }}>
+                Messengeur
+            </h1>
             <div className="card-padding">
                 <form onSubmit={handleSubmit} className="mt-4">
                     {error && <div className="alert alert-danger" role="alert">{error}</div>}
