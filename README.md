@@ -27,8 +27,8 @@ qui est accessible uniquement aux utilisateurs de type admin. Un utilisateur a u
 ## Architecture du projet
 
 L'application web développée pour ce devoir se compose principalement de deux parties, l'interface administrateur et l'interface de chat utilisateur. Pour les implémenter, nous utilisons respectivement Spring et React, qui interagissent entre eux, comme l'illustre le schéma ci-dessous.
-## 图片
-![Architecture du projet](/conception/Architecture.JPG)
+## TODO
+![Architecture](/img/Architecture.jpg)
 
  La première partie, basé sur Spring, joue un double rôle. Il englobe à la fois les services et les pages web liés à l'interface d'administrateur, ainsi que les services web destinés au projet React.
 
@@ -41,8 +41,9 @@ L'accès à ces contrôleurs est soumis à une authentification de l'utilisateur
 Les contrôleurs REST utilisés par l'application React nécessitent quant à eux la présentation d'un jeton **JWT (JSON Web Token)** et renvoient des objets JSON. 
 Les fonctionnalités de l'application d'administration comprennent la création d’un nouveau utilisateurs, la modification de leurs informations(nom, prénom, email, mot de passe, isAdmin), la suppression d'un utilisateur, la désactivation ainsi que la recherche de ces utilisateurs.
 
+Interface administrateur:
 
-![interface administrateur](/conception/Architecture.JPG)
+![interface administrateur](/img/interface%20admin.png)
 
 Pour la deuxième partie, le chat de discussion, il faut réaliser la gestion des échanges de messages en temps réel, ainsi que de la gestion du cycle de vie des salons de discussion. Il est développé avec React et utilise le protocole WebSocket pour recevoir et diffuser des messages sur le canal approprié. 
 
@@ -53,10 +54,12 @@ L'utilisation d'un token JWT fourni lors de la connexion permet de consommer les
 
 Dans le projet, les composants sont codés en fichiers TSX pour garantir l'intégrité des types de variables et faciliter l'intégration de code HTML.
 
-![interface utilisateur](/conception/Architecture.JPG)
+Interface utilisateur: 
+
+![interface utilisateur](/img/interface%20utilisateur.png)
 
 
-## Conception
+## 别人的Conception
 
 Si la structure générale du projet a été suggérée par le sujet du devoir, la phase de conception a elle été réalisée librement.
 
