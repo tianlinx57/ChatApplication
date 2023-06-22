@@ -24,6 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (loginUser != null ) {
             return true;
         }
+        // Si user n'est pas connecté, rediriger vers la page login
         response.sendRedirect("/login");
         return false;
     }

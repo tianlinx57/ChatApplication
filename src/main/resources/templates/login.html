@@ -27,7 +27,7 @@
             height: 100vh;
         }
         .login-img {
-            width: 50%; /* 缩放图片的宽度 */
+            width: 30%; /* 缩放图片的宽度 */
             height: auto; /* 保持图片的原始纵横比 */
             margin-bottom: 1em;
         }
@@ -46,7 +46,7 @@
 </head>
 <body>
 <div class="login-container">
-    <h1 class="Messengeur-title">Messengeur</h1>
+    <h1 class="Messengeur-title">Messengeur Admin</h1>
     <!-- Display login image -->
     <img th:src="@{/images/Messengeur.png}" alt="Login Image" class="login-img">
     <form action="#" th:action="@{/login}" th:object="${user}" method="post" class="mt-4">
