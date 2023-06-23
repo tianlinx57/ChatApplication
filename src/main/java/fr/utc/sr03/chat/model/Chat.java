@@ -21,6 +21,7 @@ public class Chat {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    // Date limite du chat
     @Column(name = "deadline")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deadline;
@@ -28,12 +29,13 @@ public class Chat {
     @Column(name = "description")
     private String description;
 
+    // Propriétaire du chat
     @JsonManagedReference(value="proprietaire")
     @ManyToOne
     @JoinColumn(name = "proprietaire_id", nullable = false)
     private User proprietaire;
 
-
+    // Liste des utilisateurs du chat
     @JsonManagedReference(value="users")
     @ManyToMany
     @JoinTable(

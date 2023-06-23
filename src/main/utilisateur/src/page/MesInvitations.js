@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+//Les commentaires est meme comme à la page MesChat.js
 class MesInvitations extends Component {
     constructor(props) {
         super(props);

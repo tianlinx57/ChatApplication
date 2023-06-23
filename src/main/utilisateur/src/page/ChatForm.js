@@ -1,62 +1,67 @@
+// Importer les modules nécessaires de React
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from "react-router-dom";
 
 const ChatForm = () => {
     const { id } = useParams();
-    const [chatTitle, setChatTitle] = useState('');
-    const [deadline, setDeadline] = useState('');
-    const [chatDescription, setChatDescription] = useState('');
-    const [chatMembers, setChatMembers] = useState([]);
-    const [selectedMembers, setSelectedMembers] = useState([]);
-    const [ownerEmail, setOwnerEmail] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
 
+    // Définir les états locaux avec useState
+    const [chatTitle, setChatTitle] = useState(''); // Titre du chat
+    const [deadline, setDeadline] = useState(''); // Date limite
+    const [chatDescription, setChatDescription] = useState(''); // Description du chat
+    const [chatMembers, setChatMembers] = useState([]); // Liste des membres
+    const [selectedMembers, setSelectedMembers] = useState([]); // Liste des membres sélectionnés
+    const [ownerEmail, setOwnerEmail] = useState(''); // E-mail du propriétaire
+    const [successMessage, setSuccessMessage] = useState(''); // Message de succès
+
+    // Utiliser useEffect pour exécuter du code après le premier rendu du composant
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/all_users');
                 if (response.status === 200) {
                     const users = response.data.map(user => ({ email: user.mail }));
-                    setChatMembers(users);
+                    setChatMembers(users); // Mettre à jour la liste des membres
                 } else {
-                    console.error("Failed to fetch users. Status code:", response.status);
+                    console.error("Échec de la récupération des utilisateurs. Code de statut:", response.status);
                 }
             } catch (error) {
-                console.error("An error occurred while fetching the users:", error);
+                console.error("Une erreur s'est produite lors de la récupération des utilisateurs:", error);
             }
         };
 
+        // Appeler la fonction pour récupérer les utilisateurs
         fetchUsers();
 
+        // Si l'ID est différent de '0', récupérer les informations du chat
         if (id !== '0') {
             const fetchChat = async () => {
                 try {
                     const response = await axios.get(`http://localhost:8080/api/chat/${id}`);
                     if (response.status === 200) {
                         const chatData = response.data;
-                        setChatTitle(chatData.nom);
-                        setDeadline(chatData.deadline);
-                        setChatDescription(chatData.description);
-                        setSelectedMembers(chatData.users.map(user => user.mail));
-                        setOwnerEmail(chatData.proprietaire.mail); // 设置所有者的电子邮件
+                        setChatTitle(chatData.nom); // Mettre à jour le titre
+                        setDeadline(chatData.deadline); // Mettre à jour la date limite
+                        setChatDescription(chatData.description); // Mettre à jour la description
+                        setSelectedMembers(chatData.users.map(user => user.mail)); // Mettre à jour les membres sélectionnés
+                        setOwnerEmail(chatData.proprietaire.mail); // Mettre à jour l'e-mail du propriétaire
                     } else {
-                        console.error("Failed to fetch chat. Status code:", response.status);
+                        console.error("Échec de la récupération du chat. Code de statut:", response.status);
                     }
                 } catch (error) {
-                    console.error("An error occurred while fetching the chat:", error);
+                    console.error("Une erreur s'est produite lors de la récupération du chat:", error);
                 }
             };
 
+            // Appeler la fonction pour récupérer les informations du chat
             fetchChat();
         }
     }, []);
 
-
-
-
+    // Gestionnaire d'événements pour les modifications de champs de saisie
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value } = event.target; // Extraire le nom et la valeur du champ de saisie
 
         switch (name) {
             case 'chatTitle':
@@ -74,7 +79,8 @@ const ChatForm = () => {
     };
 
     const handleUserSelection = (event) => {
-        const email = event.target.value;
+        const email = event.target.value; // Extraire la valeur de la case à cocher
+        // Mettre à jour les membres sélectionnés
         setSelectedMembers(prevMembers =>
             event.target.checked
                 ? [...prevMembers, email]
@@ -83,15 +89,10 @@ const ChatForm = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Empêcher le rechargement de la page
 
-        // Getting mail from session storage
         const ownerEmail = sessionStorage.getItem('mail');
-
-        // Removing ownerEmail from members array if exists
         const membersWithoutOwner = selectedMembers.filter(member => member !== ownerEmail);
-
-        // Including ownerEmail in chatData
         const chatData = {
             title: chatTitle,
             deadline: deadline,
@@ -100,33 +101,32 @@ const ChatForm = () => {
             ownerEmail: ownerEmail
         };
 
+        // Essayer de créer ou de mettre à jour le chat
         try {
-            if (id == 0) { // Assuming that id is already defined
-                // Create new chat
+            if (id == 0) { // Supposer que l'id est déjà défini
+                // Créer un nouveau chat
                 const response = await axios.post('http://localhost:8080/api/chat', chatData);
                 if (response.status === 201) {
-                    setSuccessMessage('Chat created successfully.');
+                    setSuccessMessage('Chat créé avec succès.');
                 } else {
-                    console.error("Failed to create chat. Status code:", response.status);
+                    console.error("Échec de la création du chat. Code de statut:", response.status);
                 }
             } else {
-                // Update existing chat
-                chatData.id = id; // Adding id to chatData
+                // Mettre à jour un chat existant
+                chatData.id = id; // Ajouter l'id aux données du chat
                 const response = await axios.put(`http://localhost:8080/api/chat/${id}`, chatData);
                 if (response.status === 200) {
-                    setSuccessMessage('Chat updated successfully.');
+                    setSuccessMessage('Chat mis à jour avec succès.');
                 } else {
-                    console.error("Failed to update chat. Status code:", response.status);
+                    console.error("Échec de la mise à jour du chat. Code de statut:", response.status);
                 }
             }
         } catch (error) {
-            console.error("An error occurred:", error);
+            console.error("Une erreur s'est produite:", error);
         }
     };
 
-
-
-
+    // Rendu du composant
     return (
         <div className="col-md-12">
             <div className="container grey mb-5" style={{ fontSize: '14px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', width: '400px', margin: '0 auto', padding: '20px' }}>
@@ -186,8 +186,8 @@ const ChatForm = () => {
                                                 type="checkbox"
                                                 value={member.email}
                                                 onChange={handleUserSelection}
-                                                checked={selectedMembers.includes(member.email) || member.email === ownerEmail} // 如果是所有者，则勾选
-                                                disabled={member.email === ownerEmail} // 如果是所有者，则禁用
+                                                checked={selectedMembers.includes(member.email) || member.email === ownerEmail}
+                                                disabled={member.email === ownerEmail}
                                             />
                                             <span style={{ marginLeft: "5px" }}>{member.email}</span>
                                         </label>

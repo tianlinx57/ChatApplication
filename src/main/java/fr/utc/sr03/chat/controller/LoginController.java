@@ -21,25 +21,28 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    // Afficher la page de connexion
     @GetMapping
     public String getLogin(Model model) {
         model.addAttribute("user", new User());
         return "login";
     }
 
+    // Traitement de la connexion
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model, HttpServletRequest request) {
         System.out.println("===> mail = " + user.getMail());
         System.out.println("===> password = " + user.getPassword());
 
+        // Récupérer l'utilisateur existant
         User existingUser = userService.getUser(user.getMail(), user.getPassword());
         System.out.println("===> admin = " + user.isAdmin());
         if (existingUser == null) {
-            model.addAttribute("error", "No user found with the provided email or password is incorrect.");
+            model.addAttribute("error", "Aucun utilisateur trouvé avec l'adresse e-mail fournie ou le mot de passe est incorrect.");
             return "login";
         }
         if (!existingUser.isAdmin()) {
-            model.addAttribute("error", "You do not have permission to access the admin page.");
+            model.addAttribute("error", "Vous n'avez pas l'autorisation d'accéder à la page d'administration.");
             return "login";
         }
         request.getSession().setAttribute("email", user.getMail());

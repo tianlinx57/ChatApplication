@@ -23,14 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll() // Autoriser les requêtes WebSocket
                 .and()
-                .csrf().disable(); // 禁用CSRF保护（仅供示例，实际应用中需要启用CSRF保护）
+                .csrf().disable();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
 
-        // 允许来自localhost:3000的跨源请求
+        // Autoriser les requêtes cross-origin provenant de localhost:3000
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
@@ -46,4 +46,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
-

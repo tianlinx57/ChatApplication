@@ -30,7 +30,7 @@ public class ChatWebSocketEndpoint {
     }
 
     private Instant getChatDeadline(Long chatId) {
-        // 使用chatRepository来查询聊天的截止时间
+        // Utilise chatRepository pour obtenir la date limite du chat
         return chatRepository.findById(chatId)
                 .map(chat -> chat.getDeadline().toInstant())
                 .orElse(Instant.MAX);
@@ -38,7 +38,7 @@ public class ChatWebSocketEndpoint {
 
     @OnOpen
     public synchronized void onOpen(@PathParam("chatId") Long chatId, @PathParam("email") String email, Session session) {
-        // 检查聊天是否存在
+        // Vérifie si le chat existe
         if (!chatRepository.existsById(chatId)) {
             closeSession(session);
             return;
@@ -48,24 +48,23 @@ public class ChatWebSocketEndpoint {
         chat.put(email, session);
         CHATS.put(chatId, chat);
 
-        // 检查当前时间是否超过截止时间
+        // Vérifie si l'heure actuelle dépasse la date limite
         Instant deadline = getChatDeadline(chatId);
         Instant now = Instant.now();
         if (now.isAfter(deadline)) {
             chatRepository.deleteById(chatId);
             chat.values().forEach(this::closeSession);
-            return; // 提前退出，不发送消息
+            return; // Quitte prématurément, ne pas envoyer de message
         }
 
         for (String existingEmail : chat.keySet()) {
-            if (!existingEmail.equals(email)) { // 不要给自己发送消息
+            if (!existingEmail.equals(email)) { // Ne pas envoyer de message à soi-même
                 ChatMessage existingUserMessage = new ChatMessage(existingEmail, "joined the chat!", Instant.now().getEpochSecond());
                 sendMessageToUser(session, existingUserMessage);
             }
         }
 
-
-        // 通知聊天室的所有用户有新用户加入了
+        // Notifie tous les utilisateurs du salon de discussion qu'un nouvel utilisateur a rejoint
         ChatMessage chatMessage = new ChatMessage(email, "joined the chat!", Instant.now().getEpochSecond());
         broadcastMessage(chat, chatMessage);
     }
@@ -76,7 +75,7 @@ public class ChatWebSocketEndpoint {
             session.getBasicRemote().sendText(jsonMessage);
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to send message: " + e.getMessage());
+            System.err.println("Impossible d'envoyer le message : " + e.getMessage());
             closeSession(session);
         }
     }
@@ -85,30 +84,30 @@ public class ChatWebSocketEndpoint {
     public synchronized void onMessage(@PathParam("chatId") Long chatId, @PathParam("email") String email, String message) {
         Map<String, Session> chat = CHATS.get(chatId);
 
-        // 获取聊天的截止时间
+        // Obtient la date limite du chat
         Instant deadline = getChatDeadline(chatId);
         Instant now = Instant.now();
 
-        // 检查当前时间是否超过截止时间
+        // Vérifie si l'heure actuelle dépasse la date limite
         if (now.isAfter(deadline)) {
-            // 关闭所有与该聊天关联的会话
+            // Ferme toutes les sessions associées à ce chat
             chat.values().forEach(this::closeSession);
             chatRepository.deleteById(chatId);
-            return; // 提前退出，不发送消息
+            return; // Quitte prématurément, ne pas envoyer de message
         }
 
-        // 解析JSON消息
+        // Analyse le message JSON
         ChatMessage incomingMessage = gson.fromJson(message, ChatMessage.class);
 
-        // 从解析的JSON中获取email和content
+        // Récupère l'e-mail et le contenu à partir du JSON analysé
         String incomingEmail = incomingMessage.getEmail();
         String incomingContent = incomingMessage.getContent();
         long incomingTimestamp = incomingMessage.getTimestamp();
 
-        // 创建ChatMessage对象
+        // Crée un objet ChatMessage
         ChatMessage chatMessage = new ChatMessage(incomingEmail, incomingContent, incomingTimestamp);
 
-        // 将ChatMessage对象广播给聊天室的所有用户
+        // Diffuse le message ChatMessage à tous les utilisateurs du salon de discussion
         broadcastMessage(chat, chatMessage);
     }
 
@@ -119,12 +118,10 @@ public class ChatWebSocketEndpoint {
 
         if (chat != null) {
             chat.remove(email);
-
-            // 通知聊天室的所有用户有用户离开了
+            // Notifie tous les utilisateurs du salon de discussion qu'un utilisateur a quitté
             ChatMessage chatMessage = new ChatMessage(email, "left the chat!", Instant.now().getEpochSecond());
             broadcastMessage(chat, chatMessage);
         }
-
     }
 
     private void broadcastMessage(Map<String, Session> chat, ChatMessage chatMessage) {
@@ -134,7 +131,7 @@ public class ChatWebSocketEndpoint {
                 session.getBasicRemote().sendText(jsonMessage);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("Failed to send message: " + e.getMessage());
+                System.err.println("Impossible d'envoyer le message : " + e.getMessage());
                 closeSession(session);
             }
         });

@@ -9,24 +9,25 @@ const Login = () => {
 
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Empêcher le rechargement de la page lors de la soumission du formulaire
         const data = {
             mail: mail,
             password: password,
         };
 
+        // Envoyer une requête POST pour se connecter
         axios.post('http://localhost:8080/api/login', data)
             .then((response) => {
                 const { id, mail, firstName, lastName, isDisabled } = response.data;
                 if (isDisabled) {
                     alert('User is disabled');
                 } else {
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    sessionStorage.setItem('id', id);
-                    sessionStorage.setItem('mail', mail);
-                    sessionStorage.setItem('firstName', firstName);
-                    sessionStorage.setItem('lastName', lastName);
-                    window.location.reload();
+                    sessionStorage.setItem('isAuthenticated', 'true'); // Définir l'état d'authentification dans le stockage de session
+                    sessionStorage.setItem('id', id); // Stocker l'ID de l'utilisateur
+                    sessionStorage.setItem('mail', mail); // Stocker l'adresse e-mail de l'utilisateur
+                    sessionStorage.setItem('firstName', firstName); // Stocker le prénom de l'utilisateur
+                    sessionStorage.setItem('lastName', lastName); // Stocker le nom de famille de l'utilisateur
+                    window.location.reload(); // Recharger la page
                 }
             })
             .catch((error) => {

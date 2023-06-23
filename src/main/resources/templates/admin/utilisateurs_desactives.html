@@ -37,13 +37,11 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Utilisez Thymeleaf pour générer des lignes de tableau à partir de vos données -->
     <tr th:each="user : ${users}" th:if="${user.isDisabled}">
       <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
       <td th:text="${user.mail}">jean.dupont@example.com</td>
       <td>
         <a th:href="@{/admin/activer/(id=${user.id})}" class="btn btn-warning">Activer</a>
-<!--        <a href="#" class="btn btn-danger" onclick="confirmDelete('${user.id}')">Suppression</a>-->
         <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
       </td>
     </tr>

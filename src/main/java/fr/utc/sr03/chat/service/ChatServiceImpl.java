@@ -42,7 +42,7 @@ public class ChatServiceImpl implements ChatService{
             chat.setDeadline(deadline);
         } catch (ParseException e) {
             e.printStackTrace();
-            // Handle parse exception (e.g. return error response or set a default date)
+            // Handle parse exception
         }
         chat.setDescription(chatData.getDescription());
         chat.setCreateDate(new Date());
@@ -68,14 +68,14 @@ public class ChatServiceImpl implements ChatService{
 
 
     public Chat updateChat(long id, ChatDTO chatData) {
-        // 从数据库中查找聊天
+        // Recherche du chat dans la base de données
         Optional<Chat> optionalChat = chatRepository.findById(id);
 
-        // 如果找到聊天
+        // Si le chat est trouvé
         if (optionalChat.isPresent()) {
             Chat chat = optionalChat.get();
 
-            // 使用来自 DTO 的数据更新聊天属性
+            // Mise à jour des attributs du chat avec les données provenant du DTO
             chat.setNom(chatData.getTitle());
             chat.setDescription(chatData.getDescription());
 
@@ -85,7 +85,7 @@ public class ChatServiceImpl implements ChatService{
                 chat.setDeadline(deadline);
             } catch (ParseException e) {
                 e.printStackTrace();
-                // Handle parse exception (e.g. return error response or set a default date)
+                // Gérer l'exception de parsing
             }
 
             List<User> chatMembers = new ArrayList<>();
@@ -95,10 +95,11 @@ public class ChatServiceImpl implements ChatService{
             }
             chat.setUsers(chatMembers);
 
-            // 保存更新后的聊天到数据库
+            // Enregistrer la mise à jour du chat dans la base de données
             return chatRepository.save(chat);
         } else {
             return null;
         }
     }
+
 }

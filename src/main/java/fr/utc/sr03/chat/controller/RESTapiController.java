@@ -24,31 +24,37 @@ public class RESTapiController {
     @Autowired
     private ChatService chatService;
 
+    // Récupérer tous les chats d'un propriétaire
     @GetMapping("/proprietaire_chats/{id}")
     public List<Chat> getProprietaireChats(@PathVariable("id") long userId) {
         return userService.getProprietaireChats(userId);
     }
 
+    // Récupérer tous les utilisateurs
     @GetMapping("/all_users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    // Récupérer un chat par son identifiant
     @GetMapping("/chat/{id}")
     public Optional<Chat> getChats(@PathVariable("id") long chatId) {
         return chatService.getChat(chatId);
     }
 
+    // Récupérer tous les chats d'un utilisateur
     @GetMapping("/all_chats/{id}")
     public List<Chat> getAllChats(@PathVariable("id") long userId) {
         return userService.getAllChats(userId);
     }
 
+    // Récupérer les chats d'un utilisateur
     @GetMapping("/user_chats/{id}")
     public List<Chat> getUserChats(@PathVariable("id") long userId) {
         return userService.getUserChats(userId);
     }
 
+    // Connexion de l'utilisateur
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
         System.out.println("===> mail = " + loginRequest.getMail());
@@ -57,10 +63,11 @@ public class RESTapiController {
         if (existingUser != null) {
             return new ResponseEntity<>(existingUser, HttpStatus.OK);
         } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Adresse e-mail ou mot de passe incorrect");
         }
     }
 
+    // Créer un nouveau chat
     @PostMapping("/chat")
     public ResponseEntity<Chat> createChat(@RequestBody ChatDTO chatData) {
         try {
@@ -71,6 +78,7 @@ public class RESTapiController {
         }
     }
 
+    // Mettre à jour un chat existant
     @PutMapping("/chat/{id}")
     public ResponseEntity<Void> updateChat(@PathVariable Long id, @RequestBody ChatDTO chatData) {
         try {
@@ -81,6 +89,7 @@ public class RESTapiController {
         }
     }
 
+    // Supprimer un chat
     @DeleteMapping("/chat/{id}")
     public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
         try {
@@ -91,25 +100,22 @@ public class RESTapiController {
         }
     }
 
-
-
+    // Classe interne pour la requête de connexion
     public static class LoginRequest {
         private String mail;
         private String password;
         public String getMail() {
             return mail;
         }
-        public String setMail(String mail) {
-            return this.mail=mail;
+        public void setMail(String mail) {
+            this.mail = mail;
         }
         public String getPassword() {
             return password;
         }
-        public String setPassword(String password) {
-            return this.password=password;
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
-
-
 
 }

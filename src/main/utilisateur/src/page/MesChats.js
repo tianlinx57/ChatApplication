@@ -12,10 +12,11 @@ class MesChats extends Component {
     }
 
     componentDidMount() {
+        // Obtenir l'ID utilisateur de la session
         const userId = sessionStorage.getItem('id');
 
         if (userId) {
-            // Fetch user data here if needed
+            // Récupérer les données utilisateur ici si nécessaire
             const user = {
                 id: sessionStorage.getItem('id'),
                 firstName: sessionStorage.getItem('firstName'),
@@ -24,12 +25,13 @@ class MesChats extends Component {
             };
             this.setState({ user });
 
+            // Récupérer les chats de l'utilisateur
             this.fetchChats(userId);
         }
     }
 
     fetchChats = (userId) => {
-        // Fetching the chats from the server
+        // Récupérer les chats depuis le serveur
         fetch(`http://localhost:8080/api/proprietaire_chats/${userId}`)
             .then(response => response.json())
             .then(data => this.setState({ chats: data }))
@@ -37,6 +39,7 @@ class MesChats extends Component {
     }
 
     handleDelete = (chatId) => {
+        // Supprimer un chat
         fetch(`http://localhost:8080/api/chat/${chatId}`, {
             method: 'DELETE',
         })
@@ -56,6 +59,7 @@ class MesChats extends Component {
     };
 
     formatDateTime(dateTimeStr) {
+        // Formater la date et l'heure
         const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
         return new Date(dateTimeStr).toLocaleDateString('fr-FR', options);
     }

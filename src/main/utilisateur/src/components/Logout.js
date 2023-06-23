@@ -5,18 +5,18 @@ const Logout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // 在这里执行注销逻辑，例如清除会话存储
+        // Effectue ici la logique de déconnexion, par exemple, supprime les données de session
         sessionStorage.setItem('isAuthenticated', 'false');
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('mail');
         sessionStorage.removeItem('firstName');
         sessionStorage.removeItem('lastName');
 
-        // 然后将用户重定向到登录页面
+        // Ensuite, redirige l'utilisateur vers la page de connexion
         navigate('/login');
     });
 
-    return null; // 此组件不需要渲染任何内容
+    return null; // Ce composant n'a pas besoin de rendre du contenu
 };
 
 export default Logout;

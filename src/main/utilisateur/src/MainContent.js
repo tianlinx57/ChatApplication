@@ -9,23 +9,23 @@ import ChatForm from './page/ChatForm';
 import Logout from "./components/Logout";
 
 function MainContent() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Obtenir la fonction navigate pour la navigation programmatique
 
+    // Fonction pour vérifier si l'utilisateur est authentifié
     const isAuthenticated = () => sessionStorage.getItem('isAuthenticated') === 'true';
 
+    // Effet pour écouter les changements de stockage et rediriger si nécessaire
     useEffect(() => {
         const handleStorageChange = (event) => {
             if (event.key === 'isAuthenticated' && event.newValue === 'false') {
                 navigate('/login');
             }
         };
-
         window.addEventListener('storage', handleStorageChange);
-
         return () => {
             window.removeEventListener('storage', handleStorageChange);
         };
-    }, [navigate]);
+    }, [navigate]); // Le tableau des dépendances contient navigate pour que l'effet soit mis à jour lorsqu'il change
 
     return (
         <div className="d-flex" style={{ height: '100vh' }}>

@@ -42,7 +42,7 @@
       <td th:text="${user.mail}">jean.dupont@example.com</td>
       <td>
         <a th:href="@{/admin/edit/(id=${user.id})}" class="btn btn-warning">Édition</a>
-        <a href="#" class="btn btn-danger" onclick="confirmDelete('${user.id}')">Suppression</a>
+        <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger" onclick="confirmDelete('${user.id}')">Suppression</a>
         <a th:href="@{/admin/disable/(id=${user.id})}" class="btn btn-secondary">Désactiver</a>
       </td>
     </tr>
@@ -51,7 +51,6 @@
     </tr>
     </tbody>
   </table>
-  <!-- Ajoutez la pagination ici -->
   <nav id="paginationContainer">
     <ul class="pagination justify-content-center"></ul>
   </nav>

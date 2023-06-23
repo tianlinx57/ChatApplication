@@ -11,20 +11,20 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor implements HandlerInterceptor {
 
     /**
-     * Avant l'exécution de la méthode cible
+     * Avant l'exécution de la méthode de Controller
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String requestURI = request.getRequestURI();
 
-        //Logique de vérification de connexion
+        // Logique de vérification de connexion
         HttpSession session = request.getSession();
         Object loginUser = session.getAttribute("email");
-        if (loginUser != null ) {
+        if (loginUser != null) {
             return true;
         }
-        // Si user n'est pas connecté, rediriger vers la page login
+        // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
         response.sendRedirect("/login");
         return false;
     }

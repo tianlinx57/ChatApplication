@@ -11,10 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class AdminWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor())//L'intercepteur est enregistré dans le conteneur
-                .addPathPatterns("/**")  //Toutes les requêtes sont bloquées, y compris les ressources statiques
+        // L'intercepteur est enregistré dans le conteneur
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/**") // Toutes les requêtes sont bloquées, sans les ressources suivantes
                 .excludePathPatterns("/", "/css/**", "/fonts/**", "/images/**",
-                        "/js/**","/login","/logout","/api/**","/websocket/**"); //demande de libération
+                        "/js/**","/login","/logout","/api/**","/websocket/**");
     }
 }
-

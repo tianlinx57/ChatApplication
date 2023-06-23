@@ -16,6 +16,7 @@ const ChatPage = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Chercher les informations sur le chat quand l'ID du chat change
     useEffect(() => {
         if (chatId) {
             fetch(`http://localhost:8080/api/chat/${chatId}`)
@@ -32,6 +33,7 @@ const ChatPage = () => {
         }
     }, [chatId]);
 
+    // Démarrer la connexion WebSocket
     const startWebSocket = () => {
         const url = `ws://localhost:8080/websocket/${chatId}/${sessionStorage.getItem('mail')}`;
         webSocket.current = new WebSocket(url);
@@ -45,6 +47,7 @@ const ChatPage = () => {
             setMessages((prevMessages) => [...prevMessages, data]);
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
 
+            // Mettre à jour l'état de l'utilisateur (en ligne/hors ligne)
             if (data.content === 'joined the chat!') {
                 setUserStatus(prevStatus => ({ ...prevStatus, [data.email]: 'green' }));
             } else if (data.content === 'left the chat!') {
@@ -62,12 +65,13 @@ const ChatPage = () => {
         };
     };
 
+    // Démarrer la connexion WebSocket après un délai
     useEffect(() => {
         const email = sessionStorage.getItem('mail');
         if (email && chatId) {
             const timer = setTimeout(() => {
                 startWebSocket();
-            }, 1000); // 延迟 1 秒
+            }, 1000); // Retarder de 1 seconde
 
             return () => {
                 clearTimeout(timer);
@@ -78,11 +82,13 @@ const ChatPage = () => {
         }
     }, [chatId]);
 
+    // Envoyer le message lors de l'appui sur la touche Entrée
     const handleSubmit = (event) => {
         event.preventDefault();
         sendMessage();
     };
 
+    // Faire défiler les messages automatiquement
     const sendMessage = () => {
         const email = sessionStorage.getItem('mail');
         const timestamp = Math.floor(Date.now() / 1000);
@@ -108,10 +114,7 @@ const ChatPage = () => {
         navigate("/mes_chats");
     };
 
-    // useEffect(() => {
-    //     console.log('Modal state changed:', isModalOpen);
-    // }, [isModalOpen]);
-
+    // Code de rendu pour l'interface utilisateur
     return (
         <div className="container chat-container">
             {isModalOpen && (

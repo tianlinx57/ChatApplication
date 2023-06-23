@@ -23,24 +23,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
+        // Récupère tous les utilisateurs à partir du UserRepository
         return userRepository.findAll();
     }
 
     @Override
     public void removeUser(User user) {
+        // Supprime un utilisateur du UserRepository
         userRepository.delete(user);
     }
 
     @Override
     public void updateUser(User user) {
-        // 在保存之前加密密码
+        // Avant de sauvegarder, chiffre le mot de passe
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
         userRepository.save(user);
     }
 
     public void createUser(User user) {
-        // 在保存之前加密密码
+        // Avant de sauvegarder, chiffre le mot de passe
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
         userRepository.save(user);
@@ -48,10 +50,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String mail, String password) {
+        // Récupère un utilisateur à partir de son adresse e-mail
         Optional<User> userOptional = userRepository.findByMail(mail);
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if(passwordEncoder.matches(password, user.getPassword())){
+            // Vérifie si le mot de passe correspond
+            if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
             }
         }
@@ -61,12 +65,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
+        // Récupère un utilisateur à partir de son identifiant
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
     }
 
     public List<User> searchUsersByUsername(String username) {
-        List<User> allUsers = userRepository.findAll(); // 假设所有用户存在于 UserRepository
+        List<User> allUsers = userRepository.findAll(); // Suppose que tous les utilisateurs sont stockés dans UserRepository
 
         List<User> searchResults = allUsers.stream()
                 .filter(user -> user.getFirstName().contains(username) || user.getLastName().contains(username))
@@ -74,8 +79,9 @@ public class UserServiceImpl implements UserService {
 
         return searchResults;
     }
+
     public List<User> searchDeactivatedUsersByUsername(String username) {
-        List<User> allUsers = userRepository.findAll(); // Assuming all users are stored in UserRepository
+        List<User> allUsers = userRepository.findAll(); // Suppose que tous les utilisateurs sont stockés dans UserRepository
 
         List<User> searchResults = allUsers.stream()
                 .filter(user -> user.isDisabled() && (user.getFirstName().contains(username) || user.getLastName().contains(username)))
@@ -87,38 +93,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Chat> getProprietaireChats(long userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             return user.get().getChats_proprietaire();
         } else {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
+            throw new IllegalArgumentException("Utilisateur avec l'identifiant " + userId + " non trouvé");
         }
     }
 
     @Override
     public List<Chat> getAllChats(long userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             List<Chat> allChats = new ArrayList<>();
             allChats.addAll(user.get().getChats_user());
             allChats.addAll(user.get().getChats_proprietaire());
             return allChats;
         } else {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
+            throw new IllegalArgumentException("Utilisateur avec l'identifiant " + userId + " non trouvé");
         }
     }
 
     @Override
     public List<Chat> getUserChats(long userId) {
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             return user.get().getChats_user();
         } else {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
+            throw new IllegalArgumentException("Utilisateur avec l'identifiant " + userId + " non trouvé");
         }
     }
 
     @Override
     public Optional<User> findUserByEmail(String email) {
+        // Recherche un utilisateur par son adresse e-mail
         return userRepository.findByMail(email);
     }
 }
