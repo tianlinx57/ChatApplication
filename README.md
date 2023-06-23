@@ -6,7 +6,6 @@ Auteur: Linxiao TIAN, Xingyu DU
 <br>
 
 ## Objectif du projet
----
 
 Le projet a comme finalité le développement d'une application de salon de discussion (chat). Dans cette application, chaque utilisateur peut programmer un canal de discussion (un chat) à une date avec une durée de validité et inviter au moins un autre utilisateur.
 
@@ -20,7 +19,6 @@ La gestion des utilisateurs (ajout, suppression désactivation) se fait via une 
 qui est accessible uniquement aux utilisateurs de type admin. Un utilisateur a un nom, un prénom, une adresse mail, un mot de passe, un champ admin (vrai ou faux)
 
 ## Architecture du projet
----
 
 L'application web développée pour ce devoir se compose principalement de deux parties, l'interface administrateur et l'interface de chat utilisateur. Pour les implémenter, nous utilisons respectivement Spring et React, qui interagissent entre eux, comme l'illustre le schéma ci-dessous.
 
@@ -49,7 +47,6 @@ Voici l'interface utilisateur:
 
 
 ## Conception
----
 
 <br>
 
@@ -71,7 +68,6 @@ En outre, nous avons conçu une classe **chatDTO**, qui est utilisé comme varia
 
 
 ## Interactions entre technologies
----
 
 Pour réaliser ce projet, on a utilisé de nombreuses technologies différentes. Ensuite, on va présenter brièvement les technologies react, spring et websocket utilisées dans ce projet et leur interaction.
 
@@ -90,7 +86,6 @@ En résumé, **React**, **Spring** et **WebSocket** travaillent en synergie dans
 
 
 ## Analyse éco-responsable de l'application
----
 
 
 Grâce à l'utilisation du plug-in **GreenIT** de notre navigateur Chrome, nous avons pu évaluer l'impact environnementale de notre application.
@@ -115,7 +110,6 @@ Les résultats sont généralement positifs. Toutes les deux obtiennent le score
 
 
 ## Pistes d'amélioration
----
 
 1. Dans l'interface de admin, lorsque nous voulons modifier les informations d'un utilisateur, nous souhaitons entrer le mot de passe par défaut pour éviter de les saisir à chaque fois. Cependant, notre application Spring Boot utilise BCryptPasswordEncoder pour chiffrer les mots de passe stockés dans la base de données, de sorte que la page de modification ne peut afficher que le mot de passe chiffré.
 
