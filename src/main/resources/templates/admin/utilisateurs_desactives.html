@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Utilisateurs désactivés</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script th:src="@{/js/pagination.js}"></script>
+  <script th:src="@{/js/confirmDelete.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4 mb-4">Utilisateurs désactivés</h1>
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <a th:href="@{/admin/accueil}" class="btn btn-secondary">Accueil</a>
+      <a th:href="@{/admin/nouveau_utilisateur}" class="btn btn-secondary">Nouveau utilisateur</a>
+      <a th:href="@{/admin/utilisateurs_desactives}" class="btn btn-primary">Utilisateurs désactivés</a>
+      <a th:href="@{/logout}" class="btn btn-danger">Déconnexion</a>
+    </div>
+    <div>
+      <form th:action="@{/admin/recherche-deactives}" method="get">
+        <input type="text" class="form-control" name="username" placeholder="Nom, Prénom">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+      </form>
+    </div>
+  </div>
+  <div th:if="${message}" class="alert alert-success mt-4" role="alert" th:text="${message}" ></div>
+  <table class="table" id="userTable">
+    <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" th:if="${user.isDisabled}">
+      <td th:text="${user.firstName} + ' ' + ${user.lastName}">Jean Dupont</td>
+      <td th:text="${user.mail}">jean.dupont@example.com</td>
+      <td>
+        <a th:href="@{/admin/activer/(id=${user.id})}" class="btn btn-warning">Activer</a>
+        <a th:href="@{/admin/supp/(id=${user.id})}" class="btn btn-danger">Suppression</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <nav id="paginationContainer">
+    <ul class="pagination justify-content-center"></ul>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+.chat-container {
+    height: 100vh;
+}
+
+.chat-messages {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+.col-md-8, .col-md-4 {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    position: sticky;
+    bottom: 0;
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+
+.user-list {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.custom-modal {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.custom-modal-title {
+    margin: 0;
+    font-size: 18px;
+}
+
+.custom-modal-body {
+    padding: 20px 0;
+}
+
+.custom-modal-footer {
+    border-top: 1px solid #e5e5e5;
+    padding-top: 10px;
+    text-align: right;
+}
