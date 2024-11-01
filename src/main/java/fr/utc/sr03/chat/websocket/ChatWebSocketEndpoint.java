@@ -1,6 +1,8 @@
 package fr.utc.sr03.chat.websocket;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -24,6 +26,9 @@ public class ChatWebSocketEndpoint {
 
     private final ChatRepository chatRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(ChatWebSocketEndpoint.class);
+
+
     public ChatWebSocketEndpoint() {
         ApplicationContext applicationContext = SpringApplicationContextHolder.getContext();
         this.chatRepository = applicationContext.getBean(ChatRepository.class);
@@ -38,24 +43,26 @@ public class ChatWebSocketEndpoint {
 
     @OnOpen
     public synchronized void onOpen(@PathParam("chatId") Long chatId, @PathParam("email") String email, Session session) {
-        // Vérifie si le chat existe
-        if (!chatRepository.existsById(chatId)) {
-            closeSession(session);
-            return;
-        }
+        logger.info("用户 {} 已加入聊天 {}", email, chatId);
+
+        // // Vérifie si le chat existe
+        // if (!chatRepository.existsById(chatId)) {
+        //     closeSession(session);
+        //     return;
+        // }
 
         Map<String, Session> chat = CHATS.getOrDefault(chatId, new ConcurrentHashMap<>());
         chat.put(email, session);
         CHATS.put(chatId, chat);
-
-        // Vérifie si l'heure actuelle dépasse la date limite
-        Instant deadline = getChatDeadline(chatId);
-        Instant now = Instant.now();
-        if (now.isAfter(deadline)) {
-            chatRepository.deleteById(chatId);
-            chat.values().forEach(this::closeSession);
-            return; // Quitte prématurément, ne pas envoyer de message
-        }
+        //
+        // // Vérifie si l'heure actuelle dépasse la date limite
+        // Instant deadline = getChatDeadline(chatId);
+        // Instant now = Instant.now();
+        // if (now.isAfter(deadline)) {
+        //     chatRepository.deleteById(chatId);
+        //     chat.values().forEach(this::closeSession);
+        //     return; // Quitte prématurément, ne pas envoyer de message
+        // }
 
         for (String existingEmail : chat.keySet()) {
             if (!existingEmail.equals(email)) { // Ne pas envoyer de message à soi-même
@@ -69,19 +76,10 @@ public class ChatWebSocketEndpoint {
         broadcastMessage(chat, chatMessage);
     }
 
-    private void sendMessageToUser(Session session, ChatMessage chatMessage) {
-        String jsonMessage = gson.toJson(chatMessage);
-        try {
-            session.getBasicRemote().sendText(jsonMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Impossible d'envoyer le message : " + e.getMessage());
-            closeSession(session);
-        }
-    }
-
     @OnMessage
     public synchronized void onMessage(@PathParam("chatId") Long chatId, @PathParam("email") String email, String message) {
+        logger.info("在聊天 {} 中接收到来自 {} 的消息: {}", chatId, email, message);
+
         Map<String, Session> chat = CHATS.get(chatId);
 
         // Obtient la date limite du chat
@@ -114,6 +112,8 @@ public class ChatWebSocketEndpoint {
 
     @OnClose
     public synchronized void onClose(@PathParam("chatId") Long chatId, @PathParam("email") String email) {
+        logger.info("用户 {} 已离开聊天 {}", email, chatId);
+
         Map<String, Session> chat = CHATS.get(chatId);
 
         if (chat != null) {
@@ -124,6 +124,19 @@ public class ChatWebSocketEndpoint {
         }
     }
 
+    // 只发给对应的session
+    private void sendMessageToUser(Session session, ChatMessage chatMessage) {
+        String jsonMessage = gson.toJson(chatMessage);
+        try {
+            session.getBasicRemote().sendText(jsonMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Impossible d'envoyer le message : " + e.getMessage());
+            closeSession(session);
+        }
+    }
+
+    //发给所有这个chat里的session
     private void broadcastMessage(Map<String, Session> chat, ChatMessage chatMessage) {
         String jsonMessage = gson.toJson(chatMessage);
         chat.values().forEach(session -> {

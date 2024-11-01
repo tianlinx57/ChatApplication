@@ -14,7 +14,6 @@ const Login = () => {
             mail: mail,
             password: password,
         };
-
         // Envoyer une requête POST pour se connecter
         axios.post('http://localhost:8080/api/login', data)
             .then((response) => {

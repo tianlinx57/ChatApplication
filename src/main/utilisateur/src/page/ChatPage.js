@@ -35,7 +35,8 @@ const ChatPage = () => {
 
     // Démarrer la connexion WebSocket
     const startWebSocket = () => {
-        const url = `ws://localhost:8080/websocket/${chatId}/${sessionStorage.getItem('mail')}`;
+        // const url = `ws://localhost:8080/websocket/${chatId}/${sessionStorage.getItem('mail')}`;
+        const url = `ws://localhost:8999/websocket/${chatId}/${sessionStorage.getItem('mail')}`;
         webSocket.current = new WebSocket(url);
 
         webSocket.current.onopen = () => {
